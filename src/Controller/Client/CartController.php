@@ -1,16 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Client;
 
-
-use App\Entity\Product;
-use App\Repository\ProductRepository;
 
 use App\Service\Cart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -30,6 +26,9 @@ class CartController extends AbstractController
      */
     public function index(Cart $cart)
     {
+        if(!$this->getUser()){
+            return $this->redirectToRoute('app_login');
+        }
         return $this->render('cart/index.html.twig', [
             'cart' => $cart->getFull()
         ]);
